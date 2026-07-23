@@ -8,14 +8,14 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-echo "=== Glassmorphic Custom ISO Builder ==="
+echo "=== BEEOS Custom ISO Builder ==="
 echo ""
 
-# 1. Update keyring and install build tools
+# 1. Update keyring and install build tools (including grub and mtools for UEFI ISO creation)
 echo "[1/5] Updating keyring and installing archiso dependencies..."
 pacman -Sy --noconfirm archlinux-keyring || true
 pacman -Syu --noconfirm || true
-pacman -S --noconfirm --needed archiso git wget curl squashfs-tools xorriso
+pacman -S --noconfirm --needed archiso git wget curl squashfs-tools xorriso grub mtools dosfstools
 
 # 2. Setup profile workspace
 echo "[2/5] Setting up Archiso workspace..."
@@ -39,26 +39,26 @@ mkdir -p "$BUILD_DIR/airootfs/usr/share/aurorae/themes"
 mkdir -p "$BUILD_DIR/airootfs/usr/share/plasma/desktoptheme"
 mkdir -p "$BUILD_DIR/airootfs/usr/share/plasma/look-and-feel"
 
-# Clone Fluent KDE theme and copy folders declaratively
+# Clone Fluent KDE theme and run installer
 echo "Fetching Fluent KDE theme packages..."
 TEMP_THEME="/tmp/fluent-kde-src"
 rm -rf "$TEMP_THEME"
 git clone --depth 1 https://github.com/vinceliuice/Fluent-kde.git "$TEMP_THEME"
-
-cp -r "$TEMP_THEME/look-and-feel/"* "$BUILD_DIR/airootfs/usr/share/plasma/look-and-feel/" || true
-cp -r "$TEMP_THEME/plasma/desktoptheme/"* "$BUILD_DIR/airootfs/usr/share/plasma/desktoptheme/" || true
-cp -r "$TEMP_THEME/color-schemes/"* "$BUILD_DIR/airootfs/usr/share/color-schemes/" || true
-cp -r "$TEMP_THEME/aurorae/themes/"* "$BUILD_DIR/airootfs/usr/share/aurorae/themes/" || true
+if [ -f "$TEMP_THEME/install.sh" ]; then
+    chmod +x "$TEMP_THEME/install.sh"
+    "$TEMP_THEME/install.sh" -d "$BUILD_DIR/airootfs/usr/share" || true
+fi
 rm -rf "$TEMP_THEME"
 
-# Clone Fluent Icon theme and copy folders declaratively
+# Clone Fluent Icon theme and run installer
 echo "Fetching Fluent squircle icon theme pack..."
 TEMP_ICONS="/tmp/fluent-icons-src"
 rm -rf "$TEMP_ICONS"
 git clone --depth 1 https://github.com/vinceliuice/Fluent-icon-theme.git "$TEMP_ICONS"
-
-cp -r "$TEMP_ICONS/src/Fluent" "$BUILD_DIR/airootfs/usr/share/icons/" || true
-cp -r "$TEMP_ICONS/src/Fluent-dark" "$BUILD_DIR/airootfs/usr/share/icons/" || true
+if [ -f "$TEMP_ICONS/install.sh" ]; then
+    chmod +x "$TEMP_ICONS/install.sh"
+    "$TEMP_ICONS/install.sh" -d "$BUILD_DIR/airootfs/usr/share/icons" || true
+fi
 rm -rf "$TEMP_ICONS"
 
 # 4. Copy custom configurations from our project
@@ -90,11 +90,11 @@ mkdir -p "$BUILD_DIR/airootfs/etc/systemd/system/multi-user.target.wants"
 ln -sf /usr/lib/systemd/system/NetworkManager.service "$BUILD_DIR/airootfs/etc/systemd/system/multi-user.target.wants/NetworkManager.service"
 
 # 5. Compile the ISO using mkarchiso
-echo "[5/5] Compiling bootable custom ISO..."
+echo "[5/5] Compiling bootable BEEOS ISO..."
 mkarchiso -v -w "$WORK_DIR" -o "$OUT_DIR" "$BUILD_DIR"
 
 echo ""
 echo "=== BUILD COMPLETE ==="
-echo "Your custom bootable ISO is ready!"
+echo "Your custom BEEOS bootable ISO is ready!"
 echo "ISO Location: $OUT_DIR/"
 echo "======================"

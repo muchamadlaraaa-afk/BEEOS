@@ -23,8 +23,8 @@ jobs:
             pacman-key --populate archlinux || true
             pacman -Sy --noconfirm archlinux-keyring || true
             
-            echo 'Installing Archiso and build tools inside container...'
-            pacman -Sy --noconfirm --needed archiso git wget curl squashfs-tools xorriso
+            echo 'Installing Archiso, GRUB, and build tools inside container...'
+            pacman -Sy --noconfirm --needed archiso git wget curl squashfs-tools xorriso grub mtools dosfstools
             
             cd /workspace
             chmod +x build-iso.sh
