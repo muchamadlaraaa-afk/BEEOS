@@ -1,7 +1,6 @@
 # Arch Live Base System
 arch-install-scripts
 bash-completion
-clonezilla
 device-mapper
 dialog
 dosfstools
@@ -46,7 +45,7 @@ egl-wayland
 
 # KDE Plasma Desktop Environment
 plasma-desktop
-plasma-wayland-session
+plasma-workspace
 sddm
 kwin
 plasma-pa
@@ -66,4 +65,4 @@ optipng
 make
 
 # Custom App Launcher
-rofi-wayland
+rofi
