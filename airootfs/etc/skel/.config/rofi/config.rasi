@@ -1,0 +1,107 @@
+/*
+ * Glassmorphic Rofi Launcher Theme (Live System)
+ * Path: ~/.config/rofi/config.rasi
+ */
+
+configuration {
+    modi: "drun,run";
+    show-icons: true;
+    icon-theme: "Fluent-dark";
+    display-drun: "🔍";
+    drun-display-format: "{name}";
+}
+
+@theme "/dev/null"
+
+* {
+    font: "Outfit 11";
+    bg: rgba(20, 20, 30, 0.65); /* Glassmorphic semi-transparent dark background */
+    bg-selected: rgba(255, 255, 255, 0.15); /* Selection highlighting */
+    fg: #ffffff;
+    fg-alt: #c3c3c7;
+    border-color: rgba(255, 255, 255, 0.14); /* Crisp glass edge */
+    
+    background-color: transparent;
+    text-color: @fg;
+}
+
+window {
+    transparency: "real";
+    background-color: @bg;
+    text-color: @fg;
+    border: 1px;
+    border-color: @border-color;
+    border-radius: 24px;
+    width: 680px;
+    height: 460px;
+    x-offset: 0;
+    y-offset: 0;
+    anchor: center;
+    location: center;
+}
+
+mainbox {
+    background-color: transparent;
+    children: [ inputbar, listview ];
+    padding: 24px;
+}
+
+inputbar {
+    background-color: rgba(255, 255, 255, 0.08); /* Rounded subtle search input background */
+    border: 1px;
+    border-color: @border-color;
+    border-radius: 16px;
+    padding: 12px 18px;
+    margin: 0px 0px 24px 0px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: @fg;
+    margin: 0px 8px 0px 0px;
+}
+
+entry {
+    placeholder: "Global Search";
+    placeholder-color: @fg-alt;
+    text-color: @fg;
+}
+
+listview {
+    columns: 5;
+    lines: 3;
+    cycle: true;
+    dynamic: true;
+    layout: vertical;
+    scrollbar: false;
+    spacing: 16px;
+    background-color: transparent;
+}
+
+element {
+    orientation: vertical;
+    border-radius: 18px;
+    padding: 16px 8px;
+    background-color: transparent;
+}
+
+element-icon {
+    size: 56px; /* Large squircle icons */
+    horizontal-align: 0.5;
+    background-color: transparent;
+}
+
+element-text {
+    horizontal-align: 0.5;
+    margin: 8px 0px 0px 0px;
+    text-color: inherit;
+    font: "Outfit Medium 10";
+    background-color: transparent;
+}
+
+element selected {
+    background-color: @bg-selected;
+    text-color: @fg;
+    border: 1px;
+    border-color: rgba(255, 255, 255, 0.25);
+}

@@ -1,0 +1,40 @@
+name: Build Custom Glassmorphic ISO
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-iso:
+    name: Compile Custom Glassmorphic Archiso
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Build ISO using Arch Linux Docker Container
+        run: |
+          docker run --privileged --rm -v ${{ github.workspace }}:/workspace archlinux:latest bash -c "
+            set -e
+            echo 'Installing Archiso and build tools inside container...'
+            pacman -Sy --noconfirm --needed archiso git wget curl squashfs-tools xorriso
+            
+            cd /workspace
+            chmod +x build-iso.sh
+            
+            echo 'Starting ISO build process...'
+            ./build-iso.sh
+            
+            # Copy compiled ISO back to workspace for GitHub Artifact upload
+            mkdir -p /workspace/dist
+            cp /tmp/archiso-out/*.iso /workspace/dist/
+          "
+
+      - name: Upload Compiled Custom ISO Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyCustomOS-Glassmorphic-KDE-ISO
+          path: dist/*.iso
+          retention-days: 7

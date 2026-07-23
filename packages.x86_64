@@ -1,0 +1,69 @@
+# Arch Live Base System
+arch-install-scripts
+bash-completion
+clonezilla
+device-mapper
+dialog
+dosfstools
+e2fsprogs
+efibootmgr
+git
+grub
+intel-ucode
+amd-ucode
+iproute2
+iptables-nft
+linux
+linux-firmware
+mkinitcpio
+mkinitcpio-archiso
+nano
+networkmanager
+network-manager-applet
+parted
+sudo
+syslinux
+tar
+unzip
+wget
+curl
+jq
+xorriso
+squashfs-tools
+
+# Audio Stack
+pipewire
+pipewire-alsa
+pipewire-pulse
+pipewire-jack
+wireplumber
+
+# Graphics & Wayland Display Server
+xorg-server
+xorg-xinit
+wayland
+egl-wayland
+
+# KDE Plasma Desktop Environment
+plasma-desktop
+plasma-wayland-session
+sddm
+kwin
+plasma-pa
+powerdevil
+systemsettings
+dolphin
+konsole
+discover
+kweather
+spectacle
+breeze-gtk
+kde-gtk-config
+
+# Theme compilation requirements
+sassc
+optipng
+make
+
+# Custom App Launcher
+rofi-wayland

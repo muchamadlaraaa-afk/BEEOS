@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/liveuser/.local/bin/first-boot-setup.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=First Boot Configurator
+Comment=Configures glassmorphic layout on first desktop load
+Icon=preferences-desktop-theme
+Categories=Utility;
