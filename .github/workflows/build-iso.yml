@@ -9,28 +9,33 @@ jobs:
   build-iso:
     name: Compile Custom Glassmorphic Archiso
     runs-on: ubuntu-latest
-    container:
-      image: archlinux:latest
-      options: --privileged
 
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v4
 
-      - name: Update pacman keys and install Archiso
+      - name: Build ISO using Arch Linux Docker Container
         run: |
-          pacman-key --init
-          pacman-key --populate archlinux
-          pacman -Sy --noconfirm archlinux-keyring || true
-          pacman -Syu --noconfirm || true
-          pacman -S --noconfirm --needed archiso git wget curl squashfs-tools xorriso
-
-      - name: Build ISO
-        run: |
-          chmod +x build-iso.sh
-          ./build-iso.sh
-          mkdir -p dist
-          cp /tmp/archiso-out/*.iso dist/
+          docker run --privileged --rm -v ${{ github.workspace }}:/workspace archlinux:latest bash -c "
+            set -e
+            echo 'Updating pacman keys inside container...'
+            pacman-key --init || true
+            pacman-key --populate archlinux || true
+            pacman -Sy --noconfirm archlinux-keyring || true
+            
+            echo 'Installing Archiso and build tools inside container...'
+            pacman -Sy --noconfirm --needed archiso git wget curl squashfs-tools xorriso
+            
+            cd /workspace
+            chmod +x build-iso.sh
+            
+            echo 'Starting ISO build process...'
+            ./build-iso.sh
+            
+            # Copy compiled ISO back to workspace for GitHub Artifact upload
+            mkdir -p /workspace/dist
+            cp /tmp/archiso-out/*.iso /workspace/dist/
+          "
 
       - name: Upload Compiled Custom ISO Artifact
         uses: actions/upload-artifact@v4
