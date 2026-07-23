@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 
-iso_name="archlinux-glassmorphic-kde"
-iso_publisher="Custom OS Builder <https://github.com/google/antigravity>"
-iso_application="Custom Glassmorphic OS Live Image"
+iso_name="BEEOS"
+iso_publisher="BEEOS Builder <https://github.com/muchamadlaraaa-afk/BEEOS>"
+iso_application="BEEOS Glassmorphic Live OS Image"
 iso_version="$(date +%Y.%m.%d)"
 install_dir="arch"
 buildmodes=('iso')
